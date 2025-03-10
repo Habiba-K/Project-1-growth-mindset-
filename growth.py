@@ -21,7 +21,7 @@ st.title("Datasweeper Sterling Integrator")
 st.write("transform your files between CSV and Excel formats with built-in data cleaning and visualization Creating the project for quarter 3")
 
 #file uploader
-uploaded_files = st.file_uploader("Upload your files (accepts CSV or Excel) :", type=["cvs","xlsx"], accept_multiple_files=(True))
+uploaded_files = st.file_uploader("Upload your files (accepts CSV or Excel) :", type=["csv","xlsx"], accept_multiple_files=(True))
 
 if uploaded_files:
     for file in uploaded_files:
@@ -29,7 +29,7 @@ if uploaded_files:
 
         if file_ext == ".csv":
             df = pd.read_csv(file)
-        elif file_ext =="xlsx":
+        elif file_ext ==".xlsx":
             df = pd.read_excel(file)
         else:
             st.error(f"unsupported file type: {file_ext}")
@@ -49,7 +49,7 @@ if uploaded_files:
 
             with col2:
                 if st.button(f"Fill missing values for {file.name}"):
-                    numeric_cols = df.select_dtypes(includes=['number']).columns
+                    numeric_cols = df.select_dtypes(include=['number']).columns
                     df[numeric_cols] =df[numeric_cols].fillna(df[numeric_cols].mean())
                     st.write("✅ Missing values have been filled!")
             
@@ -64,17 +64,17 @@ if uploaded_files:
 
         #Conversion Options
         st.header('Conversion Options')
-        conversion_type = st.radio(f"Convert ({file.name} to: " , ["CVS", "Excel"], key =file.name )
+        conversion_type = st.radio(f"Convert ({file.name} to: " , ["CSV", "Excel"], key =file.name )
         if st.button(f"Convert{file.name}"):
             buffer = BytesIO()
             if conversion_type =="CSV":
                 df.to.csv(buffer, index=False)
-                file_name =file.name.replace(file_ext,"csv")
+                file_name =file.name.replace(file_ext,".csv")
                 mine_type ="text/csv"
 
             elif conversion_type =="Excel":
                 df.to.to_excel(buffer,index=False)
-                file_name = file.name.replace(file_ext, "xlsx")
+                file_name = file.name.replace(file_ext, ".xlsx")
                 mine_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             buffer.seek(0)
 
@@ -85,4 +85,4 @@ if uploaded_files:
                 mime =mine_type
             )
 
-        st.write("🎉 Done!")
+        st.success("🎉 Done!")
