@@ -35,7 +35,7 @@ if uploaded_files:
             st.error(f"unsupported file type: {file_ext}")
             continue
         st.write("🔍 Preview the head of the Dataframe")
-        st.datafame(df.head())
+        st.dataframe(df.head())
 
         #data cleaning options
         st.subheader("🛠️ Data Cleaning Options")
